@@ -1,21 +1,23 @@
 #!/usr/bin/python
 
 import sys, getopt
+import psycopg2
 
 def main (argv):
 	# Default values
-	host = 'localhost'
-	port = 5432
-	user = 'postgres'
-	password = ''
-	table = ''
-	column = ''
+	conn_host = 'localhost'
+	conn_port = 5432
+	conn_user = 'postgres'
+	conn_password = ''
+	conn_database = ''
+	conn_table = ''
+	conn_column = ''
 	
 	# Debigging what arguments were passed
 	#print('ARGV      :', argv)
 	
 	try:
-		opts, args = getopt.getopt(argv,'hH:p:u:P:t:c:', ["help", "host=", "port=", "user=", "password=", "table=", "column="])
+		opts, args = getopt.getopt(argv,'hH:p:u:P:t:c:d:', ["help", "host=", "port=", "user=", "password=", "table=", "column=", "database="])
 	except getopt.GetoptError:
 		print_help()
 		sys.exit(1)
@@ -29,25 +31,53 @@ def main (argv):
 			print_help()
 			sys.exit(1)
 		elif opt in ("-t", "--table"):
-			table = arg
+			conn_table = arg
 		elif opt in ("-c", "--column"):
-			column = arg
+			conn_column = arg
 		elif opt in ("-H", "--host"):
-			host = arg
+			conn_host = arg
 		elif opt in ("-p", "--port"):
-			host = arg
+			conn_host = arg
 		elif opt in ("-u", "--user"):
-			user = arg
+			conn_user = arg
 		elif opt in ("-P", "--password"):
-			password = arg
+			conn_password = arg
+		elif opt in ("-d", "--database"):
+			conn_database = arg
 
-	# Check if column and table are set
-	if column == '' or table == '':
+	# Check if column, table and database are set
+	if conn_column == '' or conn_table == '' or conn_database == '':
 		print_help()
 		sys.exit(1)
 		
-	print ("Table: ", table, " Column: ", column)
+	print ("Table: ", conn_table, " Column: ", conn_column, " Database: ", conn_database)
+	
+	try:
+		connection = psycopg2.connect(user = conn_user,
+                                  password = conn_password,
+                                  host = conn_host,
+                                  port = conn_port,
+                                  database = conn_database)
+		cursor = connection.cursor()
 
+		# Print PostgreSQL Connection properties
+		print ( connection.get_dsn_parameters(),"\n")
+
+		# Print PostgreSQL version
+		cursor.execute("SELECT version();")
+		record = cursor.fetchone()
+		print("You are connected to - ", record,"\n")
+
+	except (Exception, psycopg2.Error) as error :
+		print ("Error while connecting to PostgreSQL", error)
+
+	finally:
+		#closing database connection.
+		if(connection):
+			cursor.close()
+			connection.close()
+			print("PostgreSQL connection is closed")
+	
 def print_help():
 	print("txt2sql.py -t <table> -c <column> [ -H <host> | -p <port> | -u <user> | -P <password> ]\nParameters -t (--table) and -c (--column) are REQUIRED")
 
