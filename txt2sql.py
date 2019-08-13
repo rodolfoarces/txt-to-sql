@@ -11,6 +11,7 @@ def main (argv):
 	table = ''
 	column = ''
 	
+	# Debigging what arguments were passed
 	#print('ARGV      :', argv)
 	
 	try:
@@ -18,7 +19,8 @@ def main (argv):
 	except getopt.GetoptError:
 		print_help()
 		sys.exit(1)
-		
+	
+	# Debugging what options were passed	
 	#print('OPTIONS   :', opts)
 	
 	# Quit when asking for help
@@ -44,7 +46,7 @@ def main (argv):
 		print_help()
 		sys.exit(1)
 		
-	print ("Tabla: ", table, " Columna: ", column)
+	print ("Table: ", table, " Column: ", column)
 
 def print_help():
 	print("txt2sql.py -t <table> -c <column> [ -H <host> | -p <port> | -u <user> | -P <password> ]\nParameters -t (--table) and -c (--column) are REQUIRED")
