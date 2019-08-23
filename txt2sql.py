@@ -22,7 +22,7 @@ def main (argv):
 	#print('ARGV      :', argv)
 	
 	try:
-		opts, args = getopt.getopt(argv,'hH:p:u:P:t:c:d:f:s:', ["help", "host=", "port=", "user=", "password=", "table=", "column=", "database=", "file="])
+		opts, args = getopt.getopt(argv,'hH:p:u:P:t:c:d:f:s:', ["help", "host=", "port=", "user=", "password=", "table=", "column=", "database=", "file=", "sound="])
 	except getopt.GetoptError:
 		print_help()
 		sys.exit(1)
@@ -51,7 +51,7 @@ def main (argv):
 			conn_database = arg
 		elif opt in ("-f", "--file"):
 			txt_file = arg
-		elif opt in ("-s", "--sound")
+		elif opt in ("-s", "--sound"):
 			snd_file = arg
 
 	# Check if column, table and database are set
