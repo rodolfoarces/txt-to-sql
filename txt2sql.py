@@ -3,7 +3,7 @@
 import sys, getopt
 import os
 import psycopg2
-import playsound
+from playsound import playsound
 
 def main (argv):
 	# Default values
@@ -110,9 +110,7 @@ def main (argv):
 		if os.path.exists(snd_file) and os.path.isfile(snd_file):
 			playsound(snd_file)
 		else:
-			playsound(/usr/share/sounds/alsa/Noise.wav)
-	else:
-		playsound(/usr/share/sounds/alsa/Noise.wav)
+			playsound('/usr/share/sounds/alsa/Noise.wav')
 		
 	
 def print_help():

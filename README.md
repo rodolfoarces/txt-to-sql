@@ -22,4 +22,4 @@ txt2sql.py -t <table> -c <column> [ -H <host> | -p <port> | -u <user> | -P <pass
 
 ## Requierements
 
-Python module: psycopg2
+Python module: psycopg2, playsound
