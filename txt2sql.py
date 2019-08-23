@@ -3,6 +3,7 @@
 import sys, getopt
 import os
 import psycopg2
+import playsound
 
 def main (argv):
 	# Default values
@@ -15,12 +16,13 @@ def main (argv):
 	conn_column = ''
 	# Parameters
 	txt_file = ''
+	snd_file = ''
 	
 	# Debigging what arguments were passed
 	#print('ARGV      :', argv)
 	
 	try:
-		opts, args = getopt.getopt(argv,'hH:p:u:P:t:c:d:f:', ["help", "host=", "port=", "user=", "password=", "table=", "column=", "database=", "file="])
+		opts, args = getopt.getopt(argv,'hH:p:u:P:t:c:d:f:s:', ["help", "host=", "port=", "user=", "password=", "table=", "column=", "database=", "file="])
 	except getopt.GetoptError:
 		print_help()
 		sys.exit(1)
@@ -49,6 +51,8 @@ def main (argv):
 			conn_database = arg
 		elif opt in ("-f", "--file"):
 			txt_file = arg
+		elif opt in ("-s", "--sound")
+			snd_file = arg
 
 	# Check if column, table and database are set
 	if conn_column == '' or conn_table == '' or conn_database == '' or txt_file == '':
@@ -101,6 +105,15 @@ def main (argv):
 			connection.close()
 			# Debugging - Print connection closed message
 			# print("PostgreSQL connection is closed")
+	
+	if snd_file != '':
+		if os.path.exists(snd_file) and os.path.isfile(snd_file):
+			playsound(snd_file)
+		else:
+			playsound(/usr/share/sounds/alsa/Noise.wav)
+	else:
+		playsound(/usr/share/sounds/alsa/Noise.wav)
+		
 	
 def print_help():
 	print("txt2sql.py -t <table> -c <column> [ -H <host> | -p <port> | -u <user> | -P <password> ]\nParameters -t (--table),  -c (--column), -f (--file) and -d (--database) are REQUIRED")
